@@ -74,9 +74,17 @@ def chat():
     provider = data.get('provider', 'openai')
     history = data.get('history', [])
     
-    if message.strip().startswith('sk-') and len(message.strip()) > 20:
-        session['user_openai_api_key'] = message.strip()
-        return Response("API key saved! You can now chat with OpenAI models.", mimetype='text/plain')
+    stripped_msg = message.strip()
+    if len(stripped_msg) > 20:
+        if stripped_msg.startswith('sk-ant-'):
+            session['user_anthropic_api_key'] = stripped_msg
+            return Response("API key saved! You can now chat with Anthropic Claude models.", mimetype='text/plain')
+        elif stripped_msg.startswith('sk-'):
+            session['user_openai_api_key'] = stripped_msg
+            return Response("API key saved! You can now chat with OpenAI models.", mimetype='text/plain')
+        elif stripped_msg.startswith('AIza'):
+            session['user_google_api_key'] = stripped_msg
+            return Response("API key saved! You can now chat with Google Gemini models.", mimetype='text/plain')
     
     user_openai_key = session.get('user_openai_api_key')
     user_anthropic_key = session.get('user_anthropic_api_key')
