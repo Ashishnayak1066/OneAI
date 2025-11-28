@@ -1,13 +1,20 @@
-from flask import Flask, request, Response, jsonify
+from flask import Flask, request, Response, jsonify, send_from_directory
 from flask_cors import CORS
 import os
 
-app = Flask(__name__)
+static_folder = os.path.join(os.path.dirname(__file__), '..', 'client', 'dist')
+app = Flask(__name__, static_folder=static_folder, static_url_path='')
 CORS(app)
 
 OPENAI_API_KEY = os.environ.get('OPENAI_API_KEY')
 ANTHROPIC_API_KEY = os.environ.get('ANTHROPIC_API_KEY')
 GOOGLE_API_KEY = os.environ.get('GOOGLE_API_KEY')
+
+@app.route('/')
+def serve_index():
+    if os.path.exists(os.path.join(app.static_folder, 'index.html')):
+        return send_from_directory(app.static_folder, 'index.html')
+    return jsonify({"status": "healthy", "message": "API server running. Build frontend for full app."})
 
 @app.route('/api/health')
 def health():
@@ -35,6 +42,16 @@ def chat():
             yield f"Error: {str(e)}"
     
     return Response(generate(), mimetype='text/plain')
+
+@app.route('/<path:path>')
+def serve_static(path):
+    if path.startswith('api/'):
+        return jsonify({"error": "Not found"}), 404
+    if os.path.exists(os.path.join(app.static_folder, path)):
+        return send_from_directory(app.static_folder, path)
+    if os.path.exists(os.path.join(app.static_folder, 'index.html')):
+        return send_from_directory(app.static_folder, 'index.html')
+    return jsonify({"error": "Not found"}), 404
 
 def stream_openai(message: str, model: str, history: list):
     if not OPENAI_API_KEY:
@@ -111,4 +128,5 @@ def stream_google(message: str, model: str, history: list):
         yield f"Google Error: {str(e)}"
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5001, debug=True)
+    port = int(os.environ.get('PORT', 5001))
+    app.run(host='0.0.0.0', port=port, debug=True)
