@@ -1,0 +1,11 @@
+# Google Cloud Service Account Keys
+**/serviceAccountKey.json
+**/service-account-key.json
+**/*.json.key
+**/credentials.json
+**/google-credentials.json 
+
+serviceAccountKey.json
+.vercel
+.env
+**/.env 
