@@ -5,8 +5,8 @@ from werkzeug.middleware.proxy_fix import ProxyFix
 import os
 import logging
 
-from server.database import db
-from server.replit_auth import init_login_manager, make_replit_blueprint, require_login
+from database import db
+from replit_auth import init_login_manager, make_replit_blueprint
 
 logging.basicConfig(level=logging.DEBUG)
 
@@ -28,7 +28,7 @@ init_login_manager(app)
 app.register_blueprint(make_replit_blueprint(), url_prefix="/auth")
 
 with app.app_context():
-    from server import models
+    import models
     db.create_all()
     logging.info("Database tables created")
 
