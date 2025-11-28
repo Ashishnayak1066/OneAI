@@ -10,10 +10,7 @@ export function ChatArea() {
 
   return (
     <div className="flex-1 flex flex-col h-full glass">
-      <div className="flex items-center justify-between px-6 py-3 border-b border-purple-500/20">
-        <h2 className="text-lg font-medium text-white/80">
-          {selectedChat?.title || 'New Chat'}
-        </h2>
+      <div className="flex items-center justify-end px-6 py-3 border-b border-purple-500/20">
         <ModelSelector />
       </div>
 

@@ -13,7 +13,7 @@ export function LoginPage({ onLogin }: LoginPageProps) {
             </svg>
           </div>
           <h1 className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-400 mb-2">
-            Welcome to Palette
+            Welcome to Trimodels
           </h1>
           <p className="text-gray-400">
             Sign in to start chatting with AI
