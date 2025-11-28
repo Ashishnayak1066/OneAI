@@ -103,7 +103,15 @@ def chat():
         except Exception as e:
             yield f"Error: {str(e)}"
     
-    return Response(generate(), mimetype='text/plain')
+    return Response(
+        generate(), 
+        mimetype='text/plain',
+        headers={
+            'Cache-Control': 'no-cache',
+            'X-Accel-Buffering': 'no',
+            'Transfer-Encoding': 'chunked'
+        }
+    )
 
 @app.route('/<path:path>')
 def serve_static(path):
