@@ -15,8 +15,8 @@ from flask_login import LoginManager, login_user, logout_user, current_user
 from sqlalchemy.exc import NoResultFound
 from werkzeug.local import LocalProxy
 
-from database import db
-from models import OAuth, User
+from server.database import db
+from server.models import OAuth, User
 
 login_manager = None
 

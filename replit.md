@@ -9,14 +9,6 @@ Palette Chat is a multi-model AI chat interface that supports:
 - **Anthropic** (Claude 3.5 Sonnet)
 - **Google** (Gemini 2.0 Flash)
 
-## Features
-
-- User authentication via Replit Auth (Google, GitHub, email)
-- Multi-turn conversations with context preservation
-- Real-time streaming responses
-- Chat history management
-- Responsive dark theme with glassmorphism effects
-
 ## Project Structure
 
 ```
@@ -28,19 +20,14 @@ Palette Chat is a multi-model AI chat interface that supports:
 │   │   │   ├── ChatInput.tsx
 │   │   │   ├── MessageList.tsx
 │   │   │   ├── ModelSelector.tsx
-│   │   │   ├── WelcomeScreen.tsx
-│   │   │   └── LoginPage.tsx
+│   │   │   └── WelcomeScreen.tsx
 │   │   ├── store/          # Jotai state management
 │   │   ├── types/          # TypeScript types
 │   │   └── App.tsx
 │   └── vite.config.ts
 ├── server/                 # Flask backend
-│   ├── app.py              # Main API endpoints
-│   ├── database.py         # SQLAlchemy setup
-│   ├── models.py           # User and OAuth models
-│   └── replit_auth.py      # Authentication module
-├── start.sh                # Development startup script
-└── package.json            # Root build scripts
+│   └── app.py              # API endpoints
+└── start.sh                # Startup script
 ```
 
 ## Tech Stack
@@ -54,34 +41,22 @@ Palette Chat is a multi-model AI chat interface that supports:
 
 ### Backend
 - Flask with CORS support
-- Flask-Login for session management
-- Flask-Dance for OAuth
-- SQLAlchemy with PostgreSQL
 - Streaming responses for real-time chat
+- Multi-provider AI integration
 
 ## Configuration
 
-### Required Secrets
+### Required API Keys
 
-Add these in the Secrets tab:
-- `SESSION_SECRET` - For secure session management (required)
+Add these secrets in the Secrets tab:
 - `OPENAI_API_KEY` - For OpenAI models
 - `ANTHROPIC_API_KEY` - For Anthropic models  
 - `GOOGLE_API_KEY` - For Google Gemini models
 
-### Database
-
-Uses PostgreSQL (automatically configured via DATABASE_URL)
-
 ## Running the App
 
-**Development**: Both servers run via `start.sh`
-- Frontend: Port 5000 (Vite dev server)
-- Backend: Port 5001 (Flask dev server)
-
-**Production**: Single port deployment
-- Build: `npm run build`
-- Run: `gunicorn --bind=0.0.0.0:5000 server.app:app`
+The app runs on port 5000 (frontend) with the backend on port 5001.
+The frontend proxies API requests to the backend.
 
 ## Design Features
 
@@ -94,7 +69,7 @@ Uses PostgreSQL (automatically configured via DATABASE_URL)
 
 ## Recent Changes
 
-- 2024-11-28: Added Replit Auth for user authentication
-- 2024-11-28: Added PostgreSQL database for user storage
-- 2024-11-28: Fixed deployment configuration for Autoscale
-- 2024-11-28: Initial build with Palette-inspired design
+- 2024: Initial build with Palette-inspired design
+- Multi-model support (OpenAI, Anthropic, Google)
+- Streaming chat responses
+- Chat history management
