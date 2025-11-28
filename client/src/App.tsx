@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useAtom, useSetAtom } from 'jotai'
 import { Sidebar } from './components/Sidebar'
 import { ChatArea } from './components/ChatArea'
@@ -8,6 +8,7 @@ import { userAtom, isAuthLoadingAtom } from './store'
 function App() {
   const [user, setUser] = useAtom(userAtom)
   const setIsAuthLoading = useSetAtom(isAuthLoadingAtom)
+  const [skipAuth, setSkipAuth] = useState(false)
 
   useEffect(() => {
     fetch('/api/user', { credentials: 'include' })
@@ -27,10 +28,10 @@ function App() {
   }, [setUser, setIsAuthLoading])
 
   const handleLogin = () => {
-    window.location.href = '/auth/replit_auth'
+    setSkipAuth(true)
   }
 
-  if (!user) {
+  if (!user && !skipAuth) {
     return <LoginPage onLogin={handleLogin} />
   }
 
