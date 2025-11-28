@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react'
 import { useAtom } from 'jotai'
 import type { Message } from '../types'
-import { isLoadingAtom, streamingResponseAtom } from '../store'
+import { isLoadingAtom } from '../store'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 
@@ -12,18 +12,22 @@ interface MessageListProps {
 export function MessageList({ messages }: MessageListProps) {
   const containerRef = useRef<HTMLDivElement>(null)
   const [isLoading] = useAtom(isLoadingAtom)
-  const [streamingResponse] = useAtom(streamingResponseAtom)
 
   useEffect(() => {
     if (containerRef.current) {
       containerRef.current.scrollTop = containerRef.current.scrollHeight
     }
-  }, [messages, streamingResponse])
+  }, [messages])
+
+  const visibleMessages = messages.filter(m => m.content || m.role === 'user')
+
+  const lastMessage = messages[messages.length - 1]
+  const showTypingIndicator = isLoading && lastMessage?.role === 'assistant' && !lastMessage?.content
 
   return (
     <div ref={containerRef} className="flex-1 overflow-y-auto px-4 py-6">
       <div className="max-w-3xl mx-auto space-y-6">
-        {messages.map((message) => (
+        {visibleMessages.map((message) => (
           <div
             key={message.id}
             className={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}
@@ -48,19 +52,7 @@ export function MessageList({ messages }: MessageListProps) {
           </div>
         ))}
 
-        {isLoading && streamingResponse && (
-          <div className="flex justify-start">
-            <div className="max-w-[85%] rounded-2xl px-4 py-3 bg-white/10 text-white/90 border border-purple-500/20">
-              <div className="prose prose-invert prose-sm max-w-none">
-                <ReactMarkdown remarkPlugins={[remarkGfm]}>
-                  {streamingResponse}
-                </ReactMarkdown>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {isLoading && !streamingResponse && (
+        {showTypingIndicator && (
           <div className="flex justify-start">
             <div className="rounded-2xl px-4 py-3 bg-white/10 border border-purple-500/20">
               <div className="flex items-center gap-1">
