@@ -1,3 +1,3 @@
 #!/bin/bash
-cd server && python app.py &
+python -m server.app &
 cd client && npm run dev
