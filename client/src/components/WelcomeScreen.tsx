@@ -8,7 +8,7 @@ export function WelcomeScreen() {
           </svg>
         </div>
         <h1 className="text-3xl font-bold mb-3 bg-gradient-to-r from-purple-400 via-pink-400 to-indigo-400 bg-clip-text text-transparent">
-          Welcome to Palette
+          Welcome to Trimodels
         </h1>
         <p className="text-white/60 mb-8">
           Your AI-powered chat assistant. Ask questions, get creative, or just have a conversation.
