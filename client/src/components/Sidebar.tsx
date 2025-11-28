@@ -1,10 +1,15 @@
 import { useAtom, useSetAtom } from 'jotai'
-import { chatsAtom, selectedChatIdAtom, deleteChatAtom } from '../store'
+import { chatsAtom, selectedChatIdAtom, deleteChatAtom, userAtom } from '../store'
 
 export function Sidebar() {
   const [chats] = useAtom(chatsAtom)
   const [selectedChatId, setSelectedChatId] = useAtom(selectedChatIdAtom)
   const deleteChat = useSetAtom(deleteChatAtom)
+  const [user] = useAtom(userAtom)
+
+  const handleLogout = () => {
+    window.location.href = '/auth/logout'
+  }
 
   return (
     <div className="w-64 min-w-64 h-full glass-darker border-r border-purple-500/20 flex flex-col">
@@ -72,11 +77,30 @@ export function Sidebar() {
       </div>
 
       <div className="p-3 border-t border-purple-500/20">
-        <div className="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-white/5 cursor-pointer transition-all">
-          <div className="w-8 h-8 rounded-full bg-gradient-to-br from-green-400 to-emerald-600 flex items-center justify-center text-white text-sm font-medium">
-            U
+        <div className="group relative">
+          <div className="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-white/5 cursor-pointer transition-all">
+            {user?.profileImageUrl ? (
+              <img 
+                src={user.profileImageUrl} 
+                alt={user.displayName}
+                className="w-8 h-8 rounded-full object-cover"
+              />
+            ) : (
+              <div className="w-8 h-8 rounded-full bg-gradient-to-br from-green-400 to-emerald-600 flex items-center justify-center text-white text-sm font-medium">
+                {user?.displayName?.charAt(0).toUpperCase() || 'U'}
+              </div>
+            )}
+            <span className="text-sm text-white/80 flex-1 truncate">{user?.displayName || 'User'}</span>
+            <button
+              onClick={handleLogout}
+              className="opacity-0 group-hover:opacity-100 p-1.5 hover:bg-red-500/20 rounded transition-all"
+              title="Log out"
+            >
+              <svg className="w-4 h-4 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+              </svg>
+            </button>
           </div>
-          <span className="text-sm text-white/80">User</span>
         </div>
       </div>
     </div>

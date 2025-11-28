@@ -3,6 +3,18 @@ import type { Chat, Message, Model } from '../types'
 
 const generateId = () => Math.random().toString(36).substring(2, 15)
 
+export interface User {
+  id: string
+  email: string | null
+  firstName: string | null
+  lastName: string | null
+  displayName: string
+  profileImageUrl: string | null
+}
+
+export const userAtom = atom<User | null>(null)
+export const isAuthLoadingAtom = atom(true)
+
 export const chatsAtom = atom<Chat[]>([])
 
 export const selectedChatIdAtom = atom<string | null>(null)

@@ -1,10 +1,40 @@
-from flask import Flask, request, Response, jsonify, send_from_directory
+from flask import Flask, request, Response, jsonify, send_from_directory, session
 from flask_cors import CORS
+from flask_login import current_user
+from werkzeug.middleware.proxy_fix import ProxyFix
 import os
+import logging
+
+from server.database import db
+from server.replit_auth import init_login_manager, make_replit_blueprint, require_login
+
+logging.basicConfig(level=logging.DEBUG)
 
 static_folder = os.path.join(os.path.dirname(__file__), '..', 'client', 'dist')
 app = Flask(__name__, static_folder=static_folder, static_url_path='')
-CORS(app)
+app.secret_key = os.environ.get("SESSION_SECRET", os.urandom(24).hex())
+app.wsgi_app = ProxyFix(app.wsgi_app, x_proto=1, x_host=1)
+CORS(app, supports_credentials=True)
+
+app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get("DATABASE_URL")
+app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+app.config["SQLALCHEMY_ENGINE_OPTIONS"] = {
+    'pool_pre_ping': True,
+    "pool_recycle": 300,
+}
+
+db.init_app(app)
+init_login_manager(app)
+app.register_blueprint(make_replit_blueprint(), url_prefix="/auth")
+
+with app.app_context():
+    from server import models
+    db.create_all()
+    logging.info("Database tables created")
+
+@app.before_request
+def make_session_permanent():
+    session.permanent = True
 
 OPENAI_API_KEY = os.environ.get('OPENAI_API_KEY')
 ANTHROPIC_API_KEY = os.environ.get('ANTHROPIC_API_KEY')
@@ -19,6 +49,22 @@ def serve_index():
 @app.route('/api/health')
 def health():
     return jsonify({"status": "healthy"})
+
+@app.route('/api/user')
+def get_user():
+    if current_user.is_authenticated:
+        return jsonify({
+            "authenticated": True,
+            "user": {
+                "id": current_user.id,
+                "email": current_user.email,
+                "firstName": current_user.first_name,
+                "lastName": current_user.last_name,
+                "displayName": current_user.display_name,
+                "profileImageUrl": current_user.profile_image_url
+            }
+        })
+    return jsonify({"authenticated": False, "user": None})
 
 @app.route('/api/chat', methods=['POST'])
 def chat():
