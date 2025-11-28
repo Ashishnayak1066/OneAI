@@ -88,11 +88,19 @@ export function ChatInput() {
         setStreamingResponse(fullResponse)
         updateLastMessage({ chatId, content: fullResponse })
       }
+      
+      if (!fullResponse) {
+        updateLastMessage({
+          chatId,
+          content: 'No response received. Please check your API key and try again.'
+        })
+      }
     } catch (error) {
       console.error('Error:', error)
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error'
       updateLastMessage({
         chatId,
-        content: 'Sorry, there was an error processing your request. Please try again.'
+        content: `Error: ${errorMessage}. Please check your API key has available credits.`
       })
     } finally {
       setIsLoading(false)
