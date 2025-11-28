@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from 'react'
 import { useAtom, useSetAtom } from 'jotai'
 import {
   selectedChatIdAtom,
+  selectedChatAtom,
   createChatAtom,
   addMessageAtom,
   updateLastMessageAtom,
@@ -13,6 +14,7 @@ import {
 export function ChatInput() {
   const [message, setMessage] = useState('')
   const [selectedChatId] = useAtom(selectedChatIdAtom)
+  const [selectedChat] = useAtom(selectedChatAtom)
   const createChat = useSetAtom(createChatAtom)
   const addMessage = useSetAtom(addMessageAtom)
   const updateLastMessage = useSetAtom(updateLastMessageAtom)
@@ -52,13 +54,18 @@ export function ChatInput() {
     })
 
     try {
+      const history = selectedChat?.messages
+        .filter(m => m.content)
+        .map(m => ({ role: m.role, content: m.content })) || []
+      
       const response = await fetch('/api/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           message: userMessage,
           model: selectedModel.id,
-          provider: selectedModel.provider
+          provider: selectedModel.provider,
+          history: history
         })
       })
 
