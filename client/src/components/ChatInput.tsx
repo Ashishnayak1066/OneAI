@@ -78,28 +78,19 @@ export function ChatInput() {
       if (!reader) throw new Error('No reader available')
 
       let fullResponse = ''
-      const decoder = new TextDecoder('utf-8', { stream: true })
+      const decoder = new TextDecoder('utf-8')
 
-      const processStream = async () => {
-        while (true) {
-          const { done, value } = await reader.read()
-          if (done) break
+      while (true) {
+        const { done, value } = await reader.read()
+        if (done) break
 
-          const chunk = decoder.decode(value, { stream: true })
-          if (chunk) {
-            fullResponse += chunk
-            setStreamingResponse(fullResponse)
-            updateLastMessage({ chatId, content: fullResponse })
-          }
-        }
-        const finalChunk = decoder.decode()
-        if (finalChunk) {
-          fullResponse += finalChunk
+        const chunk = decoder.decode(value, { stream: true })
+        if (chunk) {
+          fullResponse += chunk
+          setStreamingResponse(fullResponse)
           updateLastMessage({ chatId, content: fullResponse })
         }
       }
-      
-      await processStream()
       
       if (!fullResponse) {
         updateLastMessage({
