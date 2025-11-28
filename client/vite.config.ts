@@ -12,6 +12,19 @@ export default defineConfig({
     port: 5000,
     allowedHosts: true,
     proxy: {
+      '/api/chat': {
+        target: 'http://localhost:5001',
+        changeOrigin: true,
+        configure: (proxy: any) => {
+          proxy.on('proxyReq', (proxyReq: any) => {
+            proxyReq.setHeader('Accept', 'text/event-stream')
+          })
+          proxy.on('proxyRes', (proxyRes: any) => {
+            proxyRes.headers['cache-control'] = 'no-cache'
+            proxyRes.headers['x-accel-buffering'] = 'no'
+          })
+        }
+      },
       '/api': {
         target: 'http://localhost:5001',
         changeOrigin: true

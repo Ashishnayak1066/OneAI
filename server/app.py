@@ -1,9 +1,10 @@
-from flask import Flask, request, Response, jsonify, send_from_directory, session
+from flask import Flask, request, Response, jsonify, send_from_directory, session, stream_with_context
 from flask_cors import CORS
 from flask_login import current_user
 from werkzeug.middleware.proxy_fix import ProxyFix
 import os
 import logging
+import sys
 
 from server.database import db
 from server.replit_auth import init_login_manager, make_replit_blueprint, require_login
@@ -90,14 +91,21 @@ def chat():
     user_anthropic_key = session.get('user_anthropic_api_key')
     user_google_key = session.get('user_google_api_key')
     
+    @stream_with_context
     def generate():
         try:
             if provider == 'openai':
-                yield from stream_openai(message, model, history, user_openai_key)
+                for chunk in stream_openai(message, model, history, user_openai_key):
+                    yield chunk
+                    sys.stdout.flush()
             elif provider == 'anthropic':
-                yield from stream_anthropic(message, model, history, user_anthropic_key)
+                for chunk in stream_anthropic(message, model, history, user_anthropic_key):
+                    yield chunk
+                    sys.stdout.flush()
             elif provider == 'google':
-                yield from stream_google(message, model, history, user_google_key)
+                for chunk in stream_google(message, model, history, user_google_key):
+                    yield chunk
+                    sys.stdout.flush()
             else:
                 yield "Unknown provider"
         except Exception as e:
@@ -105,10 +113,12 @@ def chat():
     
     return Response(
         generate(), 
-        mimetype='text/plain; charset=utf-8',
+        mimetype='text/event-stream',
         headers={
             'Cache-Control': 'no-cache, no-store, must-revalidate',
-            'X-Accel-Buffering': 'no'
+            'X-Accel-Buffering': 'no',
+            'Connection': 'keep-alive',
+            'Content-Type': 'text/event-stream; charset=utf-8'
         }
     )
 
