@@ -105,11 +105,10 @@ def chat():
     
     return Response(
         generate(), 
-        mimetype='text/plain',
+        mimetype='text/plain; charset=utf-8',
         headers={
-            'Cache-Control': 'no-cache',
-            'X-Accel-Buffering': 'no',
-            'Transfer-Encoding': 'chunked'
+            'Cache-Control': 'no-cache, no-store, must-revalidate',
+            'X-Accel-Buffering': 'no'
         }
     )
 
