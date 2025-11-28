@@ -74,14 +74,22 @@ def chat():
     provider = data.get('provider', 'openai')
     history = data.get('history', [])
     
+    if message.strip().startswith('sk-') and len(message.strip()) > 20:
+        session['user_openai_api_key'] = message.strip()
+        return Response("API key saved! You can now chat with OpenAI models.", mimetype='text/plain')
+    
+    user_openai_key = session.get('user_openai_api_key')
+    user_anthropic_key = session.get('user_anthropic_api_key')
+    user_google_key = session.get('user_google_api_key')
+    
     def generate():
         try:
             if provider == 'openai':
-                yield from stream_openai(message, model, history)
+                yield from stream_openai(message, model, history, user_openai_key)
             elif provider == 'anthropic':
-                yield from stream_anthropic(message, model, history)
+                yield from stream_anthropic(message, model, history, user_anthropic_key)
             elif provider == 'google':
-                yield from stream_google(message, model, history)
+                yield from stream_google(message, model, history, user_google_key)
             else:
                 yield "Unknown provider"
         except Exception as e:
@@ -99,14 +107,15 @@ def serve_static(path):
         return send_from_directory(app.static_folder, 'index.html')
     return jsonify({"error": "Not found"}), 404
 
-def stream_openai(message: str, model: str, history: list):
-    if not OPENAI_API_KEY:
-        yield "Please set your OPENAI_API_KEY in the Secrets tab to use OpenAI models."
+def stream_openai(message: str, model: str, history: list, user_api_key: str = None):
+    api_key = user_api_key or OPENAI_API_KEY
+    if not api_key:
+        yield "Please paste your OpenAI API key (starts with sk-) in the chat to use OpenAI models."
         return
     
     try:
         from openai import OpenAI
-        client = OpenAI(api_key=OPENAI_API_KEY)
+        client = OpenAI(api_key=api_key)
         
         messages = [{"role": m["role"], "content": m["content"]} for m in history]
         messages.append({"role": "user", "content": message})
@@ -123,14 +132,15 @@ def stream_openai(message: str, model: str, history: list):
     except Exception as e:
         yield f"OpenAI Error: {str(e)}"
 
-def stream_anthropic(message: str, model: str, history: list):
-    if not ANTHROPIC_API_KEY:
-        yield "Please set your ANTHROPIC_API_KEY in the Secrets tab to use Anthropic models."
+def stream_anthropic(message: str, model: str, history: list, user_api_key: str = None):
+    api_key = user_api_key or ANTHROPIC_API_KEY
+    if not api_key:
+        yield "Please paste your Anthropic API key in the chat to use Anthropic models."
         return
     
     try:
         import anthropic
-        client = anthropic.Anthropic(api_key=ANTHROPIC_API_KEY)
+        client = anthropic.Anthropic(api_key=api_key)
         
         messages = [{"role": m["role"], "content": m["content"]} for m in history]
         messages.append({"role": "user", "content": message})
@@ -145,16 +155,17 @@ def stream_anthropic(message: str, model: str, history: list):
     except Exception as e:
         yield f"Anthropic Error: {str(e)}"
 
-def stream_google(message: str, model: str, history: list):
-    if not GOOGLE_API_KEY:
-        yield "Please set your GOOGLE_API_KEY in the Secrets tab to use Google models."
+def stream_google(message: str, model: str, history: list, user_api_key: str = None):
+    api_key = user_api_key or GOOGLE_API_KEY
+    if not api_key:
+        yield "Please paste your Google API key in the chat to use Google models."
         return
     
     try:
         from google import genai
         from google.genai import types
         
-        client = genai.Client(api_key=GOOGLE_API_KEY)
+        client = genai.Client(api_key=api_key)
         
         contents = []
         for m in history:
