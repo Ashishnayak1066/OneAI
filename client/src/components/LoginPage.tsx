@@ -1,6 +1,6 @@
 export function LoginPage() {
   const handleSignIn = () => {
-    window.location.href = '/auth/replit_auth'
+    window.location.href = '/auth/login'
   }
 
   return (
