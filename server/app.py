@@ -8,6 +8,7 @@ import sys
 
 from server.database import db
 from server.replit_auth import init_login_manager, make_replit_blueprint, require_login
+from server.google_auth import google_auth
 
 logging.basicConfig(level=logging.DEBUG)
 
@@ -27,6 +28,7 @@ app.config["SQLALCHEMY_ENGINE_OPTIONS"] = {
 db.init_app(app)
 init_login_manager(app)
 app.register_blueprint(make_replit_blueprint(), url_prefix="/auth")
+app.register_blueprint(google_auth)
 
 with app.app_context():
     from server import models
