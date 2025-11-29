@@ -3,5 +3,12 @@
   "version": "1.0.0",
   "scripts": {
     "build": "cd client && npm install && npm run build"
+  },
+  "dependencies": {
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "lucide-react": "^0.555.0",
+    "tailwind-merge": "^3.4.0",
+    "wouter": "^3.8.0"
   }
 }
