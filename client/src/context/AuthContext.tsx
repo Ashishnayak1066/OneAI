@@ -2,11 +2,11 @@ import React, { createContext, useContext, useState, useEffect, ReactNode } from
 
 interface User {
   id: string
-  email: string
-  firstName?: string
-  lastName?: string
-  displayName?: string
-  profileImageUrl?: string
+  email: string | null
+  firstName: string | null
+  lastName: string | null
+  displayName: string
+  profileImageUrl: string | null
 }
 
 interface AuthContextType {
