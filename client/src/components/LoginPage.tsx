@@ -1,13 +1,8 @@
-import { useState } from 'react'
-import { LoginModal } from './LoginModal'
-
 interface LoginPageProps {
   onLogin: () => void
 }
 
 export function LoginPage({ onLogin }: LoginPageProps) {
-  const [showModal, setShowModal] = useState(false)
-
   return (
     <div className="min-h-screen bg-white flex items-center justify-center p-4">
       <div className="w-full max-w-md">
@@ -27,7 +22,7 @@ export function LoginPage({ onLogin }: LoginPageProps) {
 
         <div className="bg-gray-50 rounded-2xl border border-gray-200 p-8">
           <button
-            onClick={() => setShowModal(true)}
+            onClick={onLogin}
             className="w-full py-4 px-6 rounded-xl bg-black hover:bg-gray-800 text-white font-semibold transition-all duration-200 flex items-center justify-center gap-3 shadow-lg"
           >
             <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
@@ -38,7 +33,7 @@ export function LoginPage({ onLogin }: LoginPageProps) {
 
           <div className="mt-6 text-center">
             <p className="text-gray-500 text-sm">
-              Sign in with your Google account
+              Sign in with Google, GitHub, or email
             </p>
           </div>
         </div>
@@ -56,11 +51,6 @@ export function LoginPage({ onLogin }: LoginPageProps) {
           </div>
         </div>
       </div>
-
-      <LoginModal 
-        isOpen={showModal} 
-        onClose={() => setShowModal(false)} 
-      />
     </div>
   )
 }
