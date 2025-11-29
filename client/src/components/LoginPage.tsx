@@ -38,7 +38,7 @@ export function LoginPage({ onLogin }: LoginPageProps) {
 
           <div className="mt-6 text-center">
             <p className="text-gray-500 text-sm">
-              Sign in with Google, Apple, Microsoft, or email
+              Sign in with your Google account
             </p>
           </div>
         </div>
