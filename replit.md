@@ -1,33 +1,47 @@
-# Palette Chat
+# Trimodels
 
-A sleek AI-powered chat application with a modern dark theme and glassmorphism UI.
+A modern AI-powered chat application with a clean white UI design similar to ChatGPT.
 
 ## Overview
 
-Palette Chat is a multi-model AI chat interface that supports:
+Trimodels is a multi-model AI chat interface that supports:
 - **OpenAI** (GPT-4o, GPT-4o Mini)
 - **Anthropic** (Claude 3.5 Sonnet)
 - **Google** (Gemini 2.0 Flash)
 
+Users provide their own API keys directly in the chat interface, with real-time streaming responses.
+
 ## Project Structure
 
 ```
-├── client/                 # React frontend
+├── client/                     # React frontend
 │   ├── src/
-│   │   ├── components/     # UI components
+│   │   ├── components/         # UI components
+│   │   │   ├── ui/             # shadcn/ui base components
+│   │   │   │   ├── button.tsx
+│   │   │   │   ├── card.tsx
+│   │   │   │   ├── input.tsx
+│   │   │   │   └── label.tsx
+│   │   │   ├── Login.tsx       # Login page with Google OAuth
+│   │   │   ├── SignUp.tsx      # Signup page with Google OAuth
 │   │   │   ├── Sidebar.tsx
 │   │   │   ├── ChatArea.tsx
 │   │   │   ├── ChatInput.tsx
 │   │   │   ├── MessageList.tsx
 │   │   │   ├── ModelSelector.tsx
 │   │   │   └── WelcomeScreen.tsx
-│   │   ├── store/          # Jotai state management
-│   │   ├── types/          # TypeScript types
-│   │   └── App.tsx
+│   │   ├── context/            # React context
+│   │   │   └── AuthContext.tsx # Authentication state
+│   │   ├── lib/                # Utility functions
+│   │   │   └── utils.ts        # cn() helper for classnames
+│   │   ├── store/              # Jotai state management
+│   │   ├── types/              # TypeScript types
+│   │   └── App.tsx             # Main app with routing
 │   └── vite.config.ts
-├── server/                 # Flask backend
-│   └── app.py              # API endpoints
-└── start.sh                # Startup script
+├── server/                     # Flask backend
+│   ├── app.py                  # API endpoints
+│   └── google_auth.py          # Google OAuth blueprint
+└── start.sh                    # Startup script
 ```
 
 ## Tech Stack
@@ -36,22 +50,36 @@ Palette Chat is a multi-model AI chat interface that supports:
 - React 18 with TypeScript
 - Vite for build tooling
 - Tailwind CSS for styling
+- shadcn/ui components
+- wouter for client-side routing
+- lucide-react for icons
 - Jotai for state management
 - React Markdown for rendering responses
 
 ### Backend
 - Flask with CORS support
+- Flask-Dance for Google OAuth
+- Flask-Login for session management
+- Flask-SQLAlchemy with PostgreSQL
 - Streaming responses for real-time chat
 - Multi-provider AI integration
 
-## Configuration
+## Authentication
 
-### Required API Keys
+The app uses Google OAuth for authentication:
+- Login and Signup pages with modern shadcn/ui design
+- Google OAuth integration via Flask-Dance
+- Session-based authentication with Flask-Login
 
-Add these secrets in the Secrets tab:
-- `OPENAI_API_KEY` - For OpenAI models
-- `ANTHROPIC_API_KEY` - For Anthropic models  
-- `GOOGLE_API_KEY` - For Google Gemini models
+### Required Secrets
+- `GOOGLE_OAUTH_CLIENT_ID` - Google OAuth Client ID
+- `GOOGLE_OAUTH_CLIENT_SECRET` - Google OAuth Client Secret
+
+### API Keys (User-provided in chat)
+Users enter their own API keys directly in the chat interface:
+- OpenAI API Key
+- Anthropic API Key
+- Google API Key
 
 ## Running the App
 
@@ -60,16 +88,16 @@ The frontend proxies API requests to the backend.
 
 ## Design Features
 
-- Dark theme with purple/indigo gradient accents
-- Glassmorphism effects (blur, transparency)
+- Clean white UI design similar to ChatGPT
+- Modern shadcn/ui components
 - Smooth animations and transitions
 - Responsive layout
-- Custom scrollbars
 - Typing indicators during streaming
 
 ## Recent Changes
 
-- 2024: Initial build with Palette-inspired design
-- Multi-model support (OpenAI, Anthropic, Google)
-- Streaming chat responses
-- Chat history management
+- November 2025: Rebranded to Trimodels
+- November 2025: Implemented Google OAuth authentication
+- November 2025: Added modern shadcn/ui login/signup pages
+- November 2025: Added wouter routing for client-side navigation
+- November 2025: Clean white UI design implementation
