@@ -1,8 +1,6 @@
 export function LoginPage() {
   const handleSignIn = () => {
-    const currentUrl = window.location.href
-    const baseUrl = currentUrl.replace(/\/$/, '')
-    window.location.href = `${baseUrl}/auth/replit_auth`
+    window.location.href = `${window.location.origin}/auth/replit_auth`
   }
 
   return (
