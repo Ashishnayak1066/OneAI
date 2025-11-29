@@ -29,9 +29,10 @@ export default defineConfig({
         target: 'http://localhost:5001',
         changeOrigin: true
       },
-      '/auth': {
+      '^/auth': {
         target: 'http://localhost:5001',
-        changeOrigin: true
+        changeOrigin: true,
+        rewrite: (path: string) => path
       }
     }
   }
