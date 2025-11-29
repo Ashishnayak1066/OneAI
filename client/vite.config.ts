@@ -29,10 +29,13 @@ export default defineConfig({
         target: 'http://localhost:5001',
         changeOrigin: true
       },
-      '^/auth': {
+      '/google_login': {
         target: 'http://localhost:5001',
-        changeOrigin: true,
-        rewrite: (path: string) => path
+        changeOrigin: true
+      },
+      '/logout': {
+        target: 'http://localhost:5001',
+        changeOrigin: true
       }
     }
   }

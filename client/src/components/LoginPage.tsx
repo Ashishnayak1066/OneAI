@@ -1,6 +1,6 @@
 export function LoginPage() {
   const handleSignIn = () => {
-    window.location.href = `${window.location.origin}/auth/replit_auth`
+    window.location.href = `${window.location.origin}/google_login`
   }
 
   return (
