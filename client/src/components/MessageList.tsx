@@ -25,7 +25,7 @@ export function MessageList({ messages }: MessageListProps) {
   const showTypingIndicator = isLoading && lastMessage?.role === 'assistant' && !lastMessage?.content
 
   return (
-    <div ref={containerRef} className="flex-1 overflow-y-auto px-4 py-6">
+    <div ref={containerRef} className="flex-1 overflow-y-auto px-4 py-6 bg-white">
       <div className="max-w-3xl mx-auto space-y-6">
         {visibleMessages.map((message) => (
           <div
@@ -35,12 +35,12 @@ export function MessageList({ messages }: MessageListProps) {
             <div
               className={`max-w-[85%] rounded-2xl px-4 py-3 ${
                 message.role === 'user'
-                  ? 'bg-gradient-to-r from-purple-600 to-indigo-600 text-white'
-                  : 'bg-white/10 text-white/90 border border-purple-500/20'
+                  ? 'bg-black text-white'
+                  : 'bg-gray-100 text-gray-800 border border-gray-200'
               }`}
             >
               {message.role === 'assistant' ? (
-                <div className="prose prose-invert prose-sm max-w-none">
+                <div className="prose prose-sm max-w-none prose-headings:text-gray-800 prose-p:text-gray-700 prose-strong:text-gray-800 prose-code:text-gray-800 prose-code:bg-gray-200 prose-pre:bg-gray-200">
                   <ReactMarkdown remarkPlugins={[remarkGfm]}>
                     {message.content}
                   </ReactMarkdown>
@@ -54,11 +54,11 @@ export function MessageList({ messages }: MessageListProps) {
 
         {showTypingIndicator && (
           <div className="flex justify-start">
-            <div className="rounded-2xl px-4 py-3 bg-white/10 border border-purple-500/20">
+            <div className="rounded-2xl px-4 py-3 bg-gray-100 border border-gray-200">
               <div className="flex items-center gap-1">
-                <div className="w-2 h-2 rounded-full bg-purple-400 typing-dot"></div>
-                <div className="w-2 h-2 rounded-full bg-purple-400 typing-dot"></div>
-                <div className="w-2 h-2 rounded-full bg-purple-400 typing-dot"></div>
+                <div className="w-2 h-2 rounded-full bg-gray-400 typing-dot"></div>
+                <div className="w-2 h-2 rounded-full bg-gray-400 typing-dot"></div>
+                <div className="w-2 h-2 rounded-full bg-gray-400 typing-dot"></div>
               </div>
             </div>
           </div>

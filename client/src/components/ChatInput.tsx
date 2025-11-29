@@ -119,9 +119,9 @@ export function ChatInput() {
   }
 
   return (
-    <div className="border-t border-purple-500/20 p-4">
+    <div className="border-t border-gray-200 p-4 bg-white">
       <div className="max-w-3xl mx-auto">
-        <div className="relative flex items-end gap-2 rounded-2xl bg-white/5 border border-purple-500/30 focus-within:border-purple-500/60 transition-all p-2">
+        <div className="relative flex items-end gap-2 rounded-2xl bg-gray-50 border border-gray-300 focus-within:border-gray-400 transition-all p-2">
           <textarea
             ref={textareaRef}
             value={message}
@@ -130,12 +130,12 @@ export function ChatInput() {
             placeholder="Type your message..."
             rows={1}
             disabled={isLoading}
-            className="flex-1 bg-transparent text-white placeholder-white/40 outline-none resize-none px-3 py-2 max-h-[200px]"
+            className="flex-1 bg-transparent text-gray-800 placeholder-gray-400 outline-none resize-none px-3 py-2 max-h-[200px]"
           />
           <button
             onClick={handleSubmit}
             disabled={!message.trim() || isLoading}
-            className="shrink-0 w-10 h-10 rounded-xl bg-gradient-to-r from-purple-600 to-indigo-600 flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-lg hover:shadow-purple-500/25 transition-all"
+            className="shrink-0 w-10 h-10 rounded-xl bg-black hover:bg-gray-800 flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed transition-all"
           >
             {isLoading ? (
               <svg className="w-5 h-5 text-white animate-spin" fill="none" viewBox="0 0 24 24">
@@ -149,7 +149,7 @@ export function ChatInput() {
             )}
           </button>
         </div>
-        <p className="text-center text-xs text-white/40 mt-2">
+        <p className="text-center text-xs text-gray-400 mt-2">
           Press Enter to send, Shift+Enter for new line
         </p>
       </div>
