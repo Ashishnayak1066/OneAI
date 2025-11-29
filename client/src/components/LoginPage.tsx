@@ -1,8 +1,8 @@
-interface LoginPageProps {
-  onLogin: () => void
-}
+export function LoginPage() {
+  const handleSignIn = () => {
+    window.location.href = '/auth/replit_auth'
+  }
 
-export function LoginPage({ onLogin }: LoginPageProps) {
   return (
     <div className="min-h-screen bg-white flex flex-col">
       <header className="w-full p-6">
@@ -29,7 +29,7 @@ export function LoginPage({ onLogin }: LoginPageProps) {
 
           <div className="space-y-3">
             <button
-              onClick={onLogin}
+              onClick={handleSignIn}
               className="w-full py-3.5 px-4 rounded-lg border border-gray-300 bg-white hover:bg-gray-50 text-gray-700 font-medium transition-all duration-200 flex items-center justify-center gap-3"
             >
               <svg className="w-5 h-5" viewBox="0 0 24 24">
@@ -42,7 +42,7 @@ export function LoginPage({ onLogin }: LoginPageProps) {
             </button>
 
             <button
-              onClick={onLogin}
+              onClick={handleSignIn}
               className="w-full py-3.5 px-4 rounded-lg border border-gray-300 bg-white hover:bg-gray-50 text-gray-700 font-medium transition-all duration-200 flex items-center justify-center gap-3"
             >
               <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
@@ -61,7 +61,7 @@ export function LoginPage({ onLogin }: LoginPageProps) {
             </div>
 
             <button
-              onClick={onLogin}
+              onClick={handleSignIn}
               className="w-full py-3.5 px-4 rounded-lg bg-black hover:bg-gray-800 text-white font-medium transition-all duration-200 flex items-center justify-center gap-3"
             >
               <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
