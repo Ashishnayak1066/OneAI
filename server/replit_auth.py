@@ -1,4 +1,5 @@
 import jwt
+from jwt import PyJWKClient
 import os
 import uuid
 from functools import wraps
@@ -136,7 +137,21 @@ def save_user(user_claims):
 
 @oauth_authorized.connect
 def logged_in(blueprint, token):
-    user_claims = jwt.decode(token['id_token'], options={"verify_signature": False})
+    issuer_url = os.environ.get('ISSUER_URL', "https://replit.com/oidc")
+    repl_id = os.environ['REPL_ID']
+    
+    jwks_url = issuer_url + "/.well-known/jwks.json"
+    jwks_client = PyJWKClient(jwks_url)
+    signing_key = jwks_client.get_signing_key_from_jwt(token['id_token'])
+    
+    user_claims = jwt.decode(
+        token['id_token'],
+        signing_key.key,
+        algorithms=["RS256"],
+        audience=repl_id,
+        issuer=issuer_url,
+        options={"verify_signature": True, "verify_aud": True, "verify_iss": True, "verify_exp": True}
+    )
     user = save_user(user_claims)
     login_user(user)
     blueprint.token = token
