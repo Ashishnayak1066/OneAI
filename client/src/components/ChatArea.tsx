@@ -3,6 +3,7 @@ import { selectedChatAtom } from '../store'
 import { MessageList } from './MessageList'
 import { ChatInput } from './ChatInput'
 import { ModelSelector } from './ModelSelector'
+import { SettingsDropdown } from './SettingsDropdown'
 import { WelcomeScreen } from './WelcomeScreen'
 
 export function ChatArea() {
@@ -10,8 +11,9 @@ export function ChatArea() {
 
   return (
     <div className="flex-1 flex flex-col h-full bg-white">
-      <div className="flex items-center justify-end px-6 py-3 border-b border-gray-200">
+      <div className="flex items-center justify-end gap-3 px-6 py-3 border-b border-gray-200">
         <ModelSelector />
+        <SettingsDropdown />
       </div>
 
       <div className="flex-1 overflow-hidden flex flex-col">

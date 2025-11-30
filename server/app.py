@@ -151,6 +151,35 @@ def get_user():
         })
     return jsonify({"authenticated": False, "user": None})
 
+@app.route('/api/keys', methods=['GET'])
+def get_api_keys():
+    return jsonify({
+        "openai": session.get('user_openai_api_key', ''),
+        "anthropic": session.get('user_anthropic_api_key', ''),
+        "google": session.get('user_google_api_key', '')
+    })
+
+@app.route('/api/keys', methods=['POST'])
+def save_api_keys():
+    data = request.json
+    
+    if data.get('openai'):
+        session['user_openai_api_key'] = data['openai']
+    else:
+        session.pop('user_openai_api_key', None)
+    
+    if data.get('anthropic'):
+        session['user_anthropic_api_key'] = data['anthropic']
+    else:
+        session.pop('user_anthropic_api_key', None)
+    
+    if data.get('google'):
+        session['user_google_api_key'] = data['google']
+    else:
+        session.pop('user_google_api_key', None)
+    
+    return jsonify({"success": True, "message": "API keys saved"})
+
 @app.route('/api/chat', methods=['POST'])
 def chat():
     data = request.json
@@ -158,18 +187,6 @@ def chat():
     model = data.get('model', 'gpt-4o-mini')
     provider = data.get('provider', 'openai')
     history = data.get('history', [])
-    
-    stripped_msg = message.strip()
-    if len(stripped_msg) > 20:
-        if stripped_msg.startswith('sk-ant-'):
-            session['user_anthropic_api_key'] = stripped_msg
-            return Response("API key saved! You can now chat with Anthropic Claude models.", mimetype='text/plain')
-        elif stripped_msg.startswith('sk-'):
-            session['user_openai_api_key'] = stripped_msg
-            return Response("API key saved! You can now chat with OpenAI models.", mimetype='text/plain')
-        elif stripped_msg.startswith('AIza'):
-            session['user_google_api_key'] = stripped_msg
-            return Response("API key saved! You can now chat with Google Gemini models.", mimetype='text/plain')
     
     user_openai_key = session.get('user_openai_api_key')
     user_anthropic_key = session.get('user_anthropic_api_key')
