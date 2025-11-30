@@ -51,6 +51,84 @@ def serve_index():
 def health():
     return jsonify({"status": "healthy"})
 
+@app.route('/api/auth/signup', methods=['POST'])
+def signup():
+    from flask_login import login_user
+    from server.models import User
+    import uuid
+    
+    data = request.json
+    email = data.get('email', '').strip().lower()
+    name = data.get('name', '').strip()
+    password = data.get('password', '')
+    
+    if not email or not password:
+        return jsonify({"message": "Email and password are required"}), 400
+    
+    if len(password) < 6:
+        return jsonify({"message": "Password must be at least 6 characters"}), 400
+    
+    existing_user = User.query.filter_by(email=email).first()
+    if existing_user:
+        return jsonify({"message": "An account with this email already exists"}), 400
+    
+    first_name = name.split()[0] if name else None
+    last_name = ' '.join(name.split()[1:]) if name and len(name.split()) > 1 else None
+    
+    user = User(
+        id=str(uuid.uuid4()),
+        email=email,
+        first_name=first_name,
+        last_name=last_name
+    )
+    user.set_password(password)
+    
+    db.session.add(user)
+    db.session.commit()
+    
+    login_user(user)
+    
+    return jsonify({
+        "user": {
+            "id": user.id,
+            "email": user.email,
+            "firstName": user.first_name,
+            "lastName": user.last_name,
+            "displayName": user.display_name,
+            "profileImageUrl": user.profile_image_url
+        }
+    })
+
+@app.route('/api/auth/login', methods=['POST'])
+def login():
+    from flask_login import login_user
+    from server.models import User
+    
+    data = request.json
+    email = data.get('email', '').strip().lower()
+    password = data.get('password', '')
+    
+    if not email or not password:
+        return jsonify({"message": "Email and password are required"}), 400
+    
+    user = User.query.filter_by(email=email).first()
+    
+    if not user or not user.check_password(password):
+        return jsonify({"message": "Invalid email or password"}), 401
+    
+    login_user(user)
+    
+    return jsonify({
+        "user": {
+            "id": user.id,
+            "email": user.email,
+            "firstName": user.first_name,
+            "lastName": user.last_name,
+            "displayName": user.display_name,
+            "profileImageUrl": user.profile_image_url
+        }
+    })
+
 @app.route('/api/user')
 def get_user():
     if current_user.is_authenticated:
