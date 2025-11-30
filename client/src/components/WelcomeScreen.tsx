@@ -7,7 +7,7 @@ export function WelcomeScreen() {
   return (
     <div className="flex-1 flex items-center justify-center bg-white">
       <div className="text-center max-w-md px-6">
-        <h1 className="text-5xl font-bold mb-2 text-gray-800">
+        <h1 className="text-5xl mb-2 text-gray-800" style={{ fontFamily: 'Nunito, sans-serif', fontWeight: 800, letterSpacing: '-0.02em' }}>
           Trimodels
         </h1>
         <h2 className="text-2xl font-medium mb-4 text-gray-600">
