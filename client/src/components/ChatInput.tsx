@@ -127,7 +127,7 @@ export function ChatInput() {
             value={message}
             onChange={(e) => setMessage(e.target.value)}
             onKeyDown={handleKeyDown}
-            placeholder="Type your message..."
+            placeholder="Please enter a valid API key in the settings to begin chatting."
             rows={1}
             disabled={isLoading}
             className="flex-1 bg-transparent text-gray-800 placeholder-gray-400 outline-none resize-none px-3 py-2 max-h-[200px]"
