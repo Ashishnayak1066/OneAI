@@ -98,7 +98,7 @@ export function Sidebar() {
             <span className="text-sm text-gray-700 flex-1 truncate">{user?.displayName || 'User'}</span>
             <button
               onClick={handleLogout}
-              className="opacity-0 group-hover:opacity-100 p-1.5 hover:bg-red-100 rounded transition-all"
+              className="p-1.5 hover:bg-red-100 rounded transition-all"
               title="Log out"
             >
               <svg className="w-4 h-4 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
