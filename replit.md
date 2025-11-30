@@ -22,8 +22,8 @@ Users provide their own API keys directly in the chat interface, with real-time 
 │   │   │   │   ├── card.tsx
 │   │   │   │   ├── input.tsx
 │   │   │   │   └── label.tsx
-│   │   │   ├── Login.tsx       # Login page with Google OAuth
-│   │   │   ├── SignUp.tsx      # Signup page with Google OAuth
+│   │   │   ├── Login.tsx       # Login page with email/password
+│   │   │   ├── SignUp.tsx      # Signup page with email/password
 │   │   │   ├── Sidebar.tsx
 │   │   │   ├── ChatArea.tsx
 │   │   │   ├── ChatInput.tsx
@@ -40,7 +40,9 @@ Users provide their own API keys directly in the chat interface, with real-time 
 │   └── vite.config.ts
 ├── server/                     # Flask backend
 │   ├── app.py                  # API endpoints
-│   └── google_auth.py          # Google OAuth blueprint
+│   ├── google_auth.py          # Login manager setup
+│   ├── database.py             # Database configuration
+│   └── models.py               # User model
 └── start.sh                    # Startup script
 ```
 
@@ -58,7 +60,6 @@ Users provide their own API keys directly in the chat interface, with real-time 
 
 ### Backend
 - Flask with CORS support
-- Flask-Dance for Google OAuth
 - Flask-Login for session management
 - Flask-SQLAlchemy with PostgreSQL
 - Streaming responses for real-time chat
@@ -66,14 +67,10 @@ Users provide their own API keys directly in the chat interface, with real-time 
 
 ## Authentication
 
-The app uses Google OAuth for authentication:
+The app uses email/password authentication:
 - Login and Signup pages with modern shadcn/ui design
-- Google OAuth integration via Flask-Dance
 - Session-based authentication with Flask-Login
-
-### Required Secrets
-- `GOOGLE_OAUTH_CLIENT_ID` - Google OAuth Client ID
-- `GOOGLE_OAUTH_CLIENT_SECRET` - Google OAuth Client Secret
+- Password hashing with bcrypt
 
 ### API Keys (User-provided in chat)
 Users enter their own API keys directly in the chat interface:
@@ -96,8 +93,8 @@ The frontend proxies API requests to the backend.
 
 ## Recent Changes
 
+- November 2025: Simplified authentication to email/password only
 - November 2025: Rebranded to Trimodels
-- November 2025: Implemented Google OAuth authentication
 - November 2025: Added modern shadcn/ui login/signup pages
 - November 2025: Added wouter routing for client-side navigation
 - November 2025: Clean white UI design implementation
