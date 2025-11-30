@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect, ReactNode, useCallback } from 'react'
+import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react'
 
 interface User {
   id: string
@@ -16,7 +16,6 @@ interface AuthContextType {
   login: (email: string, password: string) => Promise<void>
   signup: (email: string, name: string, password: string) => Promise<void>
   logout: () => Promise<void>
-  handleGoogleCredential: (credential: string) => Promise<void>
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined)
@@ -85,23 +84,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     window.location.href = '/'
   }
 
-  const handleGoogleCredential = useCallback(async (credential: string) => {
-    const response = await fetch('/api/auth/google', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      credentials: 'include',
-      body: JSON.stringify({ credential }),
-    })
-    
-    if (!response.ok) {
-      const error = await response.json()
-      throw new Error(error.message || 'Google sign-in failed')
-    }
-    
-    const data = await response.json()
-    setUser(data.user)
-  }, [])
-
   return (
     <AuthContext.Provider
       value={{
@@ -111,7 +93,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         login,
         signup,
         logout,
-        handleGoogleCredential,
       }}
     >
       {children}

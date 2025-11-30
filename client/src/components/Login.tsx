@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react"
+import React, { useState } from "react"
 import { Link } from "wouter"
 import { Button } from "./ui/button"
 import { Input } from "./ui/input"
@@ -7,78 +7,12 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { MessageSquare, Lock, Mail } from "lucide-react"
 import { useAuth } from "../context/AuthContext"
 
-declare global {
-  interface Window {
-    google?: {
-      accounts: {
-        id: {
-          initialize: (config: any) => void
-          renderButton: (element: HTMLElement, config: any) => void
-          prompt: () => void
-        }
-      }
-    }
-  }
-}
-
 export default function Login() {
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState("")
-  const { login, handleGoogleCredential } = useAuth()
+  const { login } = useAuth()
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
-  const googleButtonRef = useRef<HTMLDivElement>(null)
-  const [googleScriptLoaded, setGoogleScriptLoaded] = useState(false)
-
-  useEffect(() => {
-    const script = document.createElement("script")
-    script.src = "https://accounts.google.com/gsi/client"
-    script.async = true
-    script.defer = true
-    script.onload = () => setGoogleScriptLoaded(true)
-    document.body.appendChild(script)
-
-    return () => {
-      const existingScript = document.querySelector('script[src="https://accounts.google.com/gsi/client"]')
-      if (existingScript) {
-        existingScript.remove()
-      }
-    }
-  }, [])
-
-  useEffect(() => {
-    if (googleScriptLoaded && window.google && googleButtonRef.current) {
-      const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID
-      
-      if (!clientId) {
-        console.error("VITE_GOOGLE_CLIENT_ID not configured")
-        return
-      }
-
-      window.google.accounts.id.initialize({
-        client_id: clientId,
-        callback: async (response: { credential: string }) => {
-          setIsLoading(true)
-          setError("")
-          try {
-            await handleGoogleCredential(response.credential)
-          } catch (err: any) {
-            setError(err.message || "Google sign-in failed")
-          } finally {
-            setIsLoading(false)
-          }
-        },
-      })
-
-      window.google.accounts.id.renderButton(googleButtonRef.current, {
-        theme: "outline",
-        size: "large",
-        width: 350,
-        text: "signin_with",
-        shape: "rectangular",
-      })
-    }
-  }, [googleScriptLoaded, handleGoogleCredential])
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -127,6 +61,7 @@ export default function Login() {
                   className="pl-10 bg-background/50 border-border" 
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
+                  autoComplete="email"
                   required
                 />
               </div>
@@ -141,6 +76,7 @@ export default function Login() {
                   className="pl-10 bg-background/50 border-border" 
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
+                  autoComplete="current-password"
                   required
                 />
               </div>
@@ -149,17 +85,6 @@ export default function Login() {
               {isLoading ? "Authenticating..." : "Sign In"}
             </Button>
           </form>
-          
-          <div className="relative my-4">
-            <div className="absolute inset-0 flex items-center">
-              <div className="w-full border-t border-border"></div>
-            </div>
-            <div className="relative flex justify-center text-xs uppercase">
-              <span className="bg-card px-2 text-muted-foreground">Or continue with</span>
-            </div>
-          </div>
-          
-          <div ref={googleButtonRef} className="w-full flex justify-center"></div>
         </CardContent>
         <CardFooter className="flex flex-col space-y-2 text-center text-sm text-muted-foreground">
           <p>Don't have an account? <Link href="/signup" className="text-primary cursor-pointer hover:underline">Sign Up</Link></p>
