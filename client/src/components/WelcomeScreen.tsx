@@ -1,4 +1,9 @@
+import { useAtom } from 'jotai'
+import { userAtom } from '../store'
+
 export function WelcomeScreen() {
+  const [user] = useAtom(userAtom)
+
   return (
     <div className="flex-1 flex items-center justify-center bg-white">
       <div className="text-center max-w-md px-6">
@@ -8,7 +13,7 @@ export function WelcomeScreen() {
           </svg>
         </div>
         <h1 className="text-3xl font-bold mb-3 text-gray-800">
-          Welcome to Trimodels
+          Trimodels welcome {user?.displayName || 'Guest'}
         </h1>
         <p className="text-gray-500 mb-8">
           Your AI-powered chat assistant. Ask questions, get creative, or just have a conversation.
