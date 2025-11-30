@@ -52,7 +52,7 @@ externalPort = 3002
 
 [deployment]
 deploymentTarget = "autoscale"
-run = ["gunicorn", "--bind=0.0.0.0:5000", "--workers=2", "--reuse-port", "server.app:app"]
+run = ["bash", "-c", "cd client && npm run build && cd .. && gunicorn --bind=0.0.0.0:5000 --reuse-port --workers=2 server.app:app"]
 build = ["npm", "run", "build"]
 
 [userenv]
