@@ -7,9 +7,12 @@ export function WelcomeScreen() {
   return (
     <div className="flex-1 flex items-center justify-center bg-white">
       <div className="text-center max-w-md px-6">
-        <h1 className="text-3xl font-bold mb-3 text-gray-800">
-          Trimodels welcome {user?.displayName || 'Guest'}
+        <h1 className="text-5xl font-bold mb-2 text-gray-800">
+          Trimodels
         </h1>
+        <h2 className="text-2xl font-medium mb-4 text-gray-600">
+          Welcome {user?.displayName || 'Guest'}
+        </h2>
         <p className="text-gray-500 mb-8">
           Your AI-powered chat assistant. Ask questions, get creative, or just have a conversation.
         </p>
