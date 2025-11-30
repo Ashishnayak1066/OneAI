@@ -129,6 +129,12 @@ def login():
         }
     })
 
+@app.route('/api/auth/logout', methods=['POST', 'GET'])
+def api_logout():
+    from flask_login import logout_user
+    logout_user()
+    return jsonify({"success": True, "message": "Logged out successfully"})
+
 @app.route('/api/user')
 def get_user():
     if current_user.is_authenticated:

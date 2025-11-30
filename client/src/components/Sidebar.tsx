@@ -7,8 +7,13 @@ export function Sidebar() {
   const deleteChat = useSetAtom(deleteChatAtom)
   const [user] = useAtom(userAtom)
 
-  const handleLogout = () => {
-    window.location.href = '/auth/logout'
+  const handleLogout = async () => {
+    try {
+      await fetch('/api/auth/logout', { method: 'POST' })
+    } catch (e) {
+      console.error('Logout error:', e)
+    }
+    window.location.href = '/'
   }
 
   return (
