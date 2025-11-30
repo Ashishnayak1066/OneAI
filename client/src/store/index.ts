@@ -109,3 +109,15 @@ export const deleteChatAtom = atom(
     }
   }
 )
+
+export interface ApiKeys {
+  openai: string
+  anthropic: string
+  google: string
+}
+
+export const apiKeysAtom = atom<ApiKeys>({
+  openai: '',
+  anthropic: '',
+  google: ''
+})
