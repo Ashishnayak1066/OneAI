@@ -1,10 +1,10 @@
-# Trimodels
+# OneAI
 
 A modern AI-powered chat application with a clean white UI design similar to ChatGPT.
 
 ## Overview
 
-Trimodels is a multi-model AI chat interface that supports:
+OneAI is a multi-model AI chat interface that supports:
 - **OpenAI** (GPT-4o, GPT-4o Mini)
 - **Anthropic** (Claude 3.5 Sonnet)
 - **Google** (Gemini 2.0 Flash)
@@ -100,7 +100,7 @@ The frontend proxies API requests to the backend.
 
 - November 2025: Added Settings dropdown for API key management
 - November 2025: Simplified authentication to email/password only
-- November 2025: Rebranded to Trimodels
+- November 2025: Rebranded to OneAI
 - November 2025: Added modern shadcn/ui login/signup pages
 - November 2025: Added wouter routing for client-side navigation
 - November 2025: Clean white UI design implementation

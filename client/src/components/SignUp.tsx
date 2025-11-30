@@ -42,7 +42,7 @@ export default function SignUp() {
             </div>
           </div>
           <CardTitle className="text-2xl font-bold">Create an account</CardTitle>
-          <CardDescription>Enter your details to get started with Trimodels</CardDescription>
+          <CardDescription>Enter your details to get started with OneAI</CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSignUp} className="space-y-4">

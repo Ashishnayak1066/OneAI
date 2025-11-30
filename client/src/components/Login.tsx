@@ -41,7 +41,7 @@ export default function Login() {
             </div>
           </div>
           <CardTitle className="text-2xl font-bold">Welcome back</CardTitle>
-          <CardDescription>Enter your credentials to access Trimodels</CardDescription>
+          <CardDescription>Enter your credentials to access OneAI</CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleLogin} className="space-y-4">

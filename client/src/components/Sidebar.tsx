@@ -26,7 +26,7 @@ export function Sidebar() {
             </svg>
           </div>
           <span className="text-lg font-bold text-gray-800">
-            Trimodels
+            OneAI
           </span>
         </div>
       </div>
