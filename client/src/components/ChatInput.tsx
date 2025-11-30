@@ -8,8 +8,7 @@ import {
   updateLastMessageAtom,
   isLoadingAtom,
   streamingResponseAtom,
-  selectedModelAtom,
-  apiKeysAtom
+  selectedModelAtom
 } from '../store'
 
 export function ChatInput() {
@@ -22,33 +21,7 @@ export function ChatInput() {
   const [isLoading, setIsLoading] = useAtom(isLoadingAtom)
   const setStreamingResponse = useSetAtom(streamingResponseAtom)
   const [selectedModel] = useAtom(selectedModelAtom)
-  const [apiKeys] = useAtom(apiKeysAtom)
   const textareaRef = useRef<HTMLTextAreaElement>(null)
-
-  const getProviderName = (provider: string) => {
-    switch (provider) {
-      case 'openai': return 'OpenAI'
-      case 'anthropic': return 'Anthropic'
-      case 'google': return 'Gemini'
-      default: return provider
-    }
-  }
-
-  const hasApiKey = () => {
-    switch (selectedModel.provider) {
-      case 'openai': return !!apiKeys.openai
-      case 'anthropic': return !!apiKeys.anthropic
-      case 'google': return !!apiKeys.google
-      default: return false
-    }
-  }
-
-  const getPlaceholder = () => {
-    if (hasApiKey()) {
-      return 'Type your message...'
-    }
-    return `Please enter a valid ${getProviderName(selectedModel.provider)} API key in the settings to start chatting`
-  }
 
   useEffect(() => {
     if (textareaRef.current) {
@@ -154,7 +127,7 @@ export function ChatInput() {
             value={message}
             onChange={(e) => setMessage(e.target.value)}
             onKeyDown={handleKeyDown}
-            placeholder={getPlaceholder()}
+            placeholder="Type your message..."
             rows={1}
             disabled={isLoading}
             className="flex-1 bg-transparent text-gray-800 placeholder-gray-400 outline-none resize-none px-3 py-2 max-h-[200px]"
