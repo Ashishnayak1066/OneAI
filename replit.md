@@ -6,8 +6,8 @@ A modern AI-powered chat application with a clean white UI design similar to Cha
 
 OneAI is a multi-model AI chat interface that supports:
 - **OpenAI** (GPT-4o, GPT-4o Mini)
-- **Anthropic** (Claude 3.5 Sonnet)
-- **Google** (Gemini 2.0 Flash)
+- **Anthropic** (Claude Sonnet 4.5)
+- **Google** (Gemini 2.5 Flash)
 
 Users provide their own API keys directly in the chat interface, with real-time streaming responses.
 

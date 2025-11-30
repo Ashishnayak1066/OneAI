@@ -33,7 +33,7 @@ export const modelsAtom = atom<Model[]>([
   { id: 'gpt-4o', name: 'GPT-4o', provider: 'openai' },
   { id: 'gpt-4o-mini', name: 'GPT-4o Mini', provider: 'openai' },
   { id: 'claude-sonnet-4-5', name: 'Claude Sonnet 4.5', provider: 'anthropic' },
-  { id: 'gemini-2.0-flash', name: 'Gemini 2.0 Flash', provider: 'google' },
+  { id: 'gemini-2.5-flash', name: 'Gemini 2.5 Flash', provider: 'google' },
 ])
 
 export const selectedModelAtom = atom<Model>({
