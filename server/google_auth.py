@@ -39,6 +39,9 @@ def get_redirect_uri():
 
 @google_auth.route("/google_login")
 def login():
+    import logging
+    logger = logging.getLogger(__name__)
+    
     if not GOOGLE_CLIENT_ID or not GOOGLE_CLIENT_SECRET:
         return "Google OAuth not configured. Please add GOOGLE_OAUTH_CLIENT_ID and GOOGLE_OAUTH_CLIENT_SECRET.", 500
     
@@ -46,12 +49,18 @@ def login():
     authorization_endpoint = google_provider_cfg["authorization_endpoint"]
 
     redirect_uri = get_redirect_uri()
+    logger.info(f"=== GOOGLE LOGIN DEBUG ===")
+    logger.info(f"Redirect URI being sent to Google: {redirect_uri}")
+    logger.info(f"Host header: {request.headers.get('Host')}")
+    logger.info(f"X-Forwarded-Host: {request.headers.get('X-Forwarded-Host')}")
+    logger.info(f"X-Forwarded-Proto: {request.headers.get('X-Forwarded-Proto')}")
     
     request_uri = client.prepare_request_uri(
         authorization_endpoint,
         redirect_uri=redirect_uri,
         scope=["openid", "email", "profile"],
     )
+    logger.info(f"Full authorization URL: {request_uri}")
     return redirect(request_uri)
 
 
