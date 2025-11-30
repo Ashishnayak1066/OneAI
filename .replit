@@ -39,7 +39,7 @@ localPort = 5001
 externalPort = 3000
 
 [[ports]]
-localPort = 36767
+localPort = 39499
 externalPort = 3002
 
 [[ports]]
@@ -50,3 +50,7 @@ externalPort = 3001
 deploymentTarget = "autoscale"
 run = ["gunicorn", "--bind=0.0.0.0:5000", "--workers=2", "--reuse-port", "server.app:app"]
 build = ["npm", "run", "build"]
+
+[userenv]
+
+[userenv.shared]
