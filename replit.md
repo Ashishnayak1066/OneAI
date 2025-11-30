@@ -72,11 +72,16 @@ The app uses email/password authentication:
 - Session-based authentication with Flask-Login
 - Password hashing with bcrypt
 
-### API Keys (User-provided in chat)
-Users enter their own API keys directly in the chat interface:
-- OpenAI API Key
-- Anthropic API Key
-- Google API Key
+### API Keys (User-provided via Settings)
+Users enter their own API keys through the Settings dropdown in the top-right corner:
+- OpenAI API Key (for GPT-4o, GPT-4o Mini)
+- Google API Key (for Gemini 2.0 Flash)
+- Anthropic API Key (for Claude 3.5 Sonnet)
+
+API keys are stored in the server session for the duration of the user's session. This approach:
+- Keeps user credentials secure (not stored permanently)
+- Allows users to provide their own API keys
+- Clears keys when the session ends
 
 ## Running the App
 
@@ -93,6 +98,7 @@ The frontend proxies API requests to the backend.
 
 ## Recent Changes
 
+- November 2025: Added Settings dropdown for API key management
 - November 2025: Simplified authentication to email/password only
 - November 2025: Rebranded to Trimodels
 - November 2025: Added modern shadcn/ui login/signup pages
