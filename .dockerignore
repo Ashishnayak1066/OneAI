@@ -1,0 +1,35 @@
+# Node
+node_modules/
+client/node_modules/
+npm-debug.log
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+.venv/
+ENV/
+env/
+
+# IDE
+.vscode/
+.idea/
+
+# Git
+.git/
+.gitignore
+
+# Misc
+*.md
+*.log
+.env.local
+.env.development
+.env.test
+
+# Replit specific
+.replit
+replit.nix
+.cache/
