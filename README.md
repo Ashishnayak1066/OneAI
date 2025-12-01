@@ -74,7 +74,7 @@ The app features a clean, white interface similar to ChatGPT with:
 
 ## License
 
-This project is open source. Feel free to use it, modify it, and make it your own!
+MIT
 
 ---
 
